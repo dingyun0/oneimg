@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import type { ThemeContent } from '@/types'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -13,6 +13,7 @@ const formSchema = z.object({
   title: z.string(),
   content: z.string(),
   template: z.string(),
+  backgroundImage: z.any().optional(),
 })
 
 interface ThemeFormProps {
@@ -22,26 +23,48 @@ interface ThemeFormProps {
 }
 
 export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps) {
-  // Define a form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       content: '',
+      template: '',
     },
   })
 
-  async function handleContentSubmit(values: z.infer<typeof formSchema>) {
-    const content = {
+  async function onFormSubmit(values: z.infer<typeof formSchema>) {
+    const file = values.backgroundImage?.[0]
+    let backgroundImageUrl = ''
+    
+    if (file) {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      await new Promise((resolve) => {
+        reader.onload = () => {
+          backgroundImageUrl = reader.result as string
+          resolve(null)
+        }
+      })
+    }
+
+    // 更新 .one-list 的背景图
+    const oneList = document.querySelector('.one-list') as HTMLElement | null
+    if (oneList) {
+      oneList.style.backgroundImage = `url(${backgroundImageUrl})`
+    }
+
+    const formattedContent: ThemeContent = {
       title: values.title,
+      theme: '', // Add a default value for the missing "theme" property
       content: values.content,
       template: values.template,
-      parentId: null,
-      theme: DEFAULT_THEME_COLOR_MAP[(values.template)][0].label,
-    } as ThemeContent
-    await onSubmit(content)
-    // reset dialog state
-    onOpenChange(false)
+      backgroundImage: backgroundImageUrl,
+      
+
+    }
+    
+    await onSubmit(formattedContent)
+    form.reset()
   }
 
   return (
@@ -55,7 +78,7 @@ export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps
         </DialogHeader>
         <div className="w-full h-full">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleContentSubmit)} className="flex flex-col gap-4">
+            <form onSubmit={form.handleSubmit(onFormSubmit)} className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="title"
@@ -116,6 +139,24 @@ export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps
                         </SelectGroup>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="backgroundImage"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <FormItem>
+                    <FormLabel>背景图片</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => onChange(e.target.files)}
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

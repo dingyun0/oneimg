@@ -20,6 +20,7 @@ export interface ThemeContent {
   content?: string;
   template: string;
   theme: string;
+  backgroundImage?: string;
 }
 
 export type EditorType = 'add' | 'add_sub' | 'close'

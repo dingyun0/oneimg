@@ -11,6 +11,9 @@ import {
   techRoseRed,
   techTemplate,
   techVibrantOrange,
+  demoBlue,
+  demoGreen,
+  demoTemplate,
 } from './templates'
 import type { ArticleModuleTemplate, ThemeColorItem } from '@/types'
 
@@ -19,6 +22,7 @@ export const DEFAULT_TEMPLATES = [
   { label: '简约黑白风格', value: 'apple-style', disabled: false, template: simpleTemplate },
   { label: '简约卡通风格', value: 'cartoon-style', disabled: false, template: cartoonTemplate },
   { label: '更多模版尽情期待', value: 'post-more', disabled: true, template: null },
+  { label: 'Demo模板', value: 'demo-style', disabled: false, template: demoTemplate },
 ] as const
 
 export const DEFAULT_TEMPLATE_MAP = DEFAULT_TEMPLATES
@@ -50,9 +54,13 @@ export const DEFAULT_THEME_COLOR_MAP: Record<string, ThemeColorItem[]> = {
     { value: '#ff611d', label: 'vibrant_orange', theme: techBlue },
     { value: '#f14040', label: 'rose_red', theme: techBlue },
   ],
+  'demo-style': [
+    { value: '#2b4c7e', label: 'demo_blue', theme: demoBlue },
+    { value: '#276749', label: 'demo_green', theme: demoGreen },
+  ],
 }
 
-export const DEFAULT_TEMPLATE = 'apple-style'
+export const DEFAULT_TEMPLATE = 'demo-style'
 export const DEFAULT_THEME = {
   label: 'snow_white',
   value: '#ddd',

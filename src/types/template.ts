@@ -4,6 +4,7 @@ export interface ModuleSection {
   container?: CustomCSSProperties;
   title?: CustomCSSProperties;
   content?: CustomCSSProperties;
+  list?: CustomCSSProperties;
 }
 
 export interface ArticleModuleTemplate {
@@ -14,6 +15,7 @@ export interface ArticleModuleTemplate {
   hero?: ModuleSection;
   main?: ModuleSection;
   sub?: ModuleSection
+  one?: ModuleSection
 }
 
 export type ModuleClassName = Record<'container' | 'title' | 'content', string>
@@ -30,6 +32,8 @@ export interface ThemeConfigProperty {
   backgroundSecondary?: string;
   foregroundPrimary?: string;
   foregroundSecondary?: string;
+  padding?: string;
+  margin?: string;
 }
 
 export interface ThemeConfig {
