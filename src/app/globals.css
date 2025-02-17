@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: hsl(0 0% 98%);
-    --one-list-background-image: url('/URL');
+    --one-list-background-image: none;
     --foreground: hsl(222.2 84% 4.9%);
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(222.2 84% 4.9%);
@@ -62,24 +62,25 @@
   }
 
   :root {
-    --white: #FFF;
-    --black: #2E2B29;
-    --black-contrast: #110F0E;
-    --gray-1: rgba(61, 37, 20, .05);
-    --gray-2: rgba(61, 37, 20, .08);
-    --gray-3: rgba(61, 37, 20, .12);
-    --gray-4: rgba(53, 38, 28, .3);
-    --gray-5: rgba(28, 25, 23, .6);
-    --green: #22C55E;
-    --purple: #6A00F5;
-    --purple-contrast: #5800CC;
-    --purple-light: rgba(88, 5, 255, .05);
-    --yellow-contrast: #FACC15;
-    --yellow: rgba(250, 204, 21, .4);
-    --yellow-light: #FFFAE5;
+    --white: #fff;
+    --black: #2e2b29;
+    --black-contrast: #110f0e;
+    --gray-1: rgba(61, 37, 20, 0.05);
+    --gray-2: rgba(61, 37, 20, 0.08);
+    --gray-3: rgba(61, 37, 20, 0.12);
+    --gray-4: rgba(53, 38, 28, 0.3);
+    --gray-5: rgba(28, 25, 23, 0.6);
+    --green: #22c55e;
+    --purple: #6a00f5;
+    --purple-contrast: #5800cc;
+    --purple-light: rgba(88, 5, 255, 0.05);
+    --yellow-contrast: #facc15;
+    --yellow: rgba(250, 204, 21, 0.4);
+    --yellow-light: #fffae5;
     --red: hsl(12, 100%, 60%);
-    --red-light: #FFEBE5;
-    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, .06), 0px 3.618px 9.949px 0px rgba(0, 0, 0, .04)
+    --red-light: #ffebe5;
+    --shadow: 0px 12px 33px 0px rgba(0, 0, 0, 0.06),
+      0px 3.618px 9.949px 0px rgba(0, 0, 0, 0.04);
   }
 }
 
@@ -90,7 +91,8 @@
 
   body {
     @apply text-foreground leading-normal;
-    font-family: var(--font-noto-sans-sc), sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: var(--font-noto-sans-sc), sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
   img {
@@ -100,7 +102,7 @@
 
 /* Basic editor styles */
 .tiptap {
-  >*+* {
+  > * + * {
     margin-top: 0.75em;
   }
 
@@ -175,9 +177,9 @@
   }
 
   pre {
-    background: #0D0D0D;
-    color: #FFF;
-    font-family: 'JetBrainsMono', monospace;
+    background: #0d0d0d;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 
@@ -231,34 +233,68 @@
 :root {
   --scrollbar-thumb-idle: #c1c1c1;
   --scrollbar-thumb-hover: #848484;
-  --scrollbar-thumb-track: #fafafa
+  --scrollbar-thumb-track: #fafafa;
 }
 
-html[data-platform=windows] * {
+html[data-platform="windows"] * {
   scrollbar-color: var(--scrollbar-thumb-idle) var(--scrollbar-thumb-track);
-  scrollbar-width: thin
+  scrollbar-width: thin;
 }
 
-html[data-platform=windows] ::-webkit-scrollbar {
-  width: 11px
+html[data-platform="windows"] ::-webkit-scrollbar {
+  width: 11px;
 }
 
-html[data-platform=windows] ::-webkit-scrollbar-track {
-  background: var(--scrollbar-thumb-track)
+html[data-platform="windows"] ::-webkit-scrollbar-track {
+  background: var(--scrollbar-thumb-track);
 }
 
-html[data-platform=windows] ::-webkit-scrollbar-thumb {
+html[data-platform="windows"] ::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb-idle);
   border: 2px solid var(--scrollbar-thumb-track);
-  border-radius: var(--reactist-border-radius-large)
+  border-radius: var(--reactist-border-radius-large);
 }
 
-html[data-platform=windows] ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-thumb-hover)
+html[data-platform="windows"] ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
 }
-.one-list{
-    background-image: var(--one-list-background-image);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+
+/* 修改滚动条样式 */
+.one {
+  overflow-y: auto; /* 添加这行确保可以滚动 */
+  height: 100%;
+}
+
+.one-list {
+  background-image: var(--one-list-background-image);
+  background-position: center;
+  background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100%; /* 确保内容少时也占满高度 */
+  padding: 1rem; /* 添加内边距 */
+}
+
+/* 修改滚动条样式 */
+.one::-webkit-scrollbar {
+  width: 6px;
+}
+
+.one::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.one::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-idle);
+  border-radius: 3px;
+}
+
+.one::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox 滚动条样式 */
+.one {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-idle) transparent;
 }

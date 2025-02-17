@@ -1,70 +1,80 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import type { ThemeContent } from '@/types'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { DEFAULT_TEMPLATES, DEFAULT_THEME_COLOR_MAP } from '@/theme'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import React, { useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import type { ThemeContent } from "@/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { DEFAULT_TEMPLATES } from "@/theme";
+import { useThemeStore } from "@/store/use-theme-store";
 
 const formSchema = z.object({
   title: z.string(),
   content: z.string(),
   template: z.string(),
-  backgroundImage: z.any().optional(),
-})
+});
 
 interface ThemeFormProps {
   onSubmit: (content: ThemeContent) => Promise<void>;
   open: boolean;
-  onOpenChange: (open: boolean) => void
+  onOpenChange: (open: boolean) => void;
 }
 
-export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps) {
+export function ThemeFormDialog({
+  onSubmit,
+  onOpenChange,
+  open,
+}: ThemeFormProps) {
+  const { setTabValue } = useThemeStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      content: '',
-      template: '',
+      title: "",
+      content: "",
+      template: "",
     },
-  })
+  });
+
+  // 监听对话框打开状态
+  useEffect(() => {
+    if (open) {
+      setTabValue("preview");
+    }
+  }, [open, setTabValue]);
 
   async function onFormSubmit(values: z.infer<typeof formSchema>) {
-    const file = values.backgroundImage?.[0]
-    let backgroundImageUrl = ''
-    
-    if (file) {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      await new Promise((resolve) => {
-        reader.onload = () => {
-          backgroundImageUrl = reader.result as string
-          resolve(null)
-        }
-      })
-    }
-
-    // 更新 .one-list 的背景图
-    const oneList = document.querySelector('.one-list') as HTMLElement | null
-    if (oneList) {
-      oneList.style.backgroundImage = `url(${backgroundImageUrl})`
-    }
-
     const formattedContent: ThemeContent = {
       title: values.title,
-      theme: '', // Add a default value for the missing "theme" property
+      theme: "",
       content: values.content,
       template: values.template,
-      backgroundImage: backgroundImageUrl,
-      
+    };
 
-    }
-    
-    await onSubmit(formattedContent)
-    form.reset()
+    await onSubmit(formattedContent);
+    form.reset();
   }
 
   return (
@@ -78,7 +88,10 @@ export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps
         </DialogHeader>
         <div className="w-full h-full">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onFormSubmit)} className="flex flex-col gap-4">
+            <form
+              onSubmit={form.handleSubmit(onFormSubmit)}
+              className="flex flex-col gap-4"
+            >
               <FormField
                 control={form.control}
                 name="title"
@@ -123,7 +136,10 @@ export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps
                 render={({ field }) => (
                   <FormItem>
                     {/* <FormLabel>模版</FormLabel> */}
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="h-12 placeholder:text-muted-foreground">
                           <SelectValue placeholder="选择模版" />
@@ -131,8 +147,12 @@ export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
-                          {DEFAULT_TEMPLATES.map(template => (
-                            <SelectItem key={template.value} value={template.value} disabled={template.disabled}>
+                          {DEFAULT_TEMPLATES.map((template) => (
+                            <SelectItem
+                              key={template.value}
+                              value={template.value}
+                              disabled={template.disabled}
+                            >
                               {template.label}
                             </SelectItem>
                           ))}
@@ -143,29 +163,13 @@ export function ThemeFormDialog({ onSubmit, onOpenChange, open }: ThemeFormProps
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="backgroundImage"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <FormItem>
-                    <FormLabel>背景图片</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => onChange(e.target.files)}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="mt-8 h-12">保存</Button>
+              <Button type="submit" className="mt-8 h-12">
+                保存
+              </Button>
             </form>
           </Form>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

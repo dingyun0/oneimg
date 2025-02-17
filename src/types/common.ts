@@ -1,13 +1,15 @@
 export interface Content {
   id?: number;
   title: string;
+  subTitle?: string;
+  subTitleContent?: string;
   content?: string;
   uploadFiles?: ImageFile[];
   // createdAt?: string;
   // updatedAt?: string;
   parentId?: number | null;
   childOrder?: number;
-  type?: 'theme_content' | 'normal_content'
+  type?: "theme_content" | "normal_content";
 }
 
 export interface ContentWithId extends Content {
@@ -23,7 +25,7 @@ export interface ThemeContent {
   backgroundImage?: string;
 }
 
-export type EditorType = 'add' | 'add_sub' | 'close'
+export type EditorType = "add" | "add_sub" | "close";
 export interface ContentListProps {
   contents: ContentWithId[];
   setContents: (contents: ContentWithId[]) => void;
@@ -31,9 +33,9 @@ export interface ContentListProps {
   onContentDelete: (content: ContentWithId) => void;
 }
 
-export type UploadFiles = UploadFile[]
+export type UploadFiles = UploadFile[];
 
-export type UploadStatus = 'ready' | 'success' | 'fail' | 'uploading'
+export type UploadStatus = "ready" | "success" | "fail" | "uploading";
 
 // export interface UploadFile {
 //   uid: number;
@@ -73,7 +75,7 @@ export interface UploadRequestOptions {
   method: string;
   data?: Record<string, string | Blob | [Blob, string]>;
   filename: string;
-  bodyType: 'json' | 'form-data' | 'file';
+  bodyType: "json" | "form-data" | "file";
   file: UploadRawFile;
   headers?: Headers | Record<string, string | number | null | undefined>;
   onError: (e: Error) => void;
@@ -94,12 +96,12 @@ export interface EditorMethods {
 }
 
 // 编辑器内容更新触发类型
-export type ActionType = 'SET_TITLE' | 'SET_CONTENT'
+export type ActionType = "SET_TITLE" | "SET_CONTENT";
 
 // Preview
 export interface PreviewRef {
-  containerRef: React.RefObject<HTMLDivElement>,
-  itemRefs: React.RefObject<{ [key: string]: HTMLDivElement }>,
+  containerRef: React.RefObject<HTMLDivElement>;
+  itemRefs: React.RefObject<{ [key: string]: HTMLDivElement }>;
 }
 
 export interface PreviewItem {
@@ -110,7 +112,7 @@ export interface PreviewItem {
 export interface SortableItemProps {
   item: ContentWithId;
   children: React.ReactNode;
-  disabled?: boolean
+  disabled?: boolean;
 }
 
 export interface ContainerProps {
