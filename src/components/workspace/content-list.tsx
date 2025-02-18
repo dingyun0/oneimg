@@ -165,7 +165,7 @@ export default function ContentList(props: ContentListProps) {
         items={rootContents.map(item => item.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="mb-2">
+        <div className="">
           {rootContents.map(item => (
             <ContentItem
               key={item.id}

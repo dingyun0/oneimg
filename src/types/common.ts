@@ -10,6 +10,7 @@ export interface Content {
   parentId?: number | null;
   childOrder?: number;
   type?: "theme_content" | "normal_content";
+  backgroundImage?: string;
 }
 
 export interface ContentWithId extends Content {

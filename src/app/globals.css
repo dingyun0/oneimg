@@ -298,3 +298,11 @@ html[data-platform="windows"] ::-webkit-scrollbar-thumb:hover {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-idle) transparent;
 }
+
+.one-list p {
+  margin: 0px;
+}
+
+.one-list p:last-child {
+  margin-bottom: 0;
+}

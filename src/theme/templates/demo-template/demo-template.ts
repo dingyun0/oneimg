@@ -4,9 +4,13 @@ import { connect } from 'http2'
 export const demoTemplate: ArticleModuleTemplate = {
   common: {
     container: {
+        paddingTop: '30px',
+        paddingBottom: '30px',
     },
     title: {},
-    content: {},
+    content: {
+        marginTop: '30px',
+    },
   },
   one: {
     container: {
@@ -21,6 +25,7 @@ export const demoTemplate: ArticleModuleTemplate = {
   },
   hero: {
     container: {
+      minHeight: '100px',
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',

@@ -33,6 +33,8 @@ export const techTemplate: ArticleModuleTemplate = {
       textAlign: 'center',
       color: 'var(--hero-title-foreground)',
       backgroundColor: 'var(--hero-title-background)',
+      paddingBottom: '10px',
+      paddingTop: '10px',
     },
     content: {
       position: 'relative',

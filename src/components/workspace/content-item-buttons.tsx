@@ -36,14 +36,7 @@ export function ContentItemButtons(props: ContentItemButtonsProps) {
                 <TooltipContent side="top" className="text-white bg-black text-sm py-1 px-2 rounded-sm">{!item.parentId ? '删除标题' : '删除子标题'}</TooltipContent>
               </Tooltip>
             </div>
-            {!item.parentId && <div className="h-[60px] flex items-center" onClick={() => onSubContentAdd(item)}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Plus className="cursor-pointer text-black" width={18} height={18} />
-                </TooltipTrigger>
-                <TooltipContent side="top" className="text-white bg-black text-sm py-1 px-2 rounded-sm">添加子标题</TooltipContent>
-              </Tooltip>
-            </div>}
+            
           </>
         )}
         {/* Only editing as project information is supported */}

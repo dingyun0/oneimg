@@ -18,11 +18,8 @@ import {
 import type { ArticleModuleTemplate, ThemeColorItem } from '@/types'
 
 export const DEFAULT_TEMPLATES = [
-  { label: '简约科技风格', value: 'wechat-post-1', disabled: false, template: techTemplate },
-  { label: '简约黑白风格', value: 'apple-style', disabled: false, template: simpleTemplate },
-  { label: '简约卡通风格', value: 'cartoon-style', disabled: false, template: cartoonTemplate },
+  { label: '保时捷公众号模板', value: 'demo-style', disabled: false, template: demoTemplate },
   { label: '更多模版尽情期待', value: 'post-more', disabled: true, template: null },
-  { label: 'Demo模板', value: 'demo-style', disabled: false, template: demoTemplate },
 ] as const
 
 export const DEFAULT_TEMPLATE_MAP = DEFAULT_TEMPLATES

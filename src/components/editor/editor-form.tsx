@@ -11,6 +11,9 @@ import type {
   ImageFile,
 } from "@/types/common";
 import { toast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ImagePlus } from 'lucide-react'
 
 type EditorProps = {
   className?: string;
@@ -30,6 +33,7 @@ type ContentAction =
   | { type: "SET_SUBTITLE_CONTENT"; payload: string }
   | { type: "SET_CONTENT"; payload?: string }
   | { type: "SET_UPLOAD_FILES"; payload: ImageFile[] }
+  | { type: "SET_BACKGROUND_IMAGE"; payload: string }
   | { type: "RESET" };
 
 const contentReducer = (state: Content, action: ContentAction): Content => {
@@ -44,6 +48,8 @@ const contentReducer = (state: Content, action: ContentAction): Content => {
       return { ...state, content: action.payload };
     case "SET_UPLOAD_FILES":
       return { ...state, uploadFiles: action.payload };
+    case "SET_BACKGROUND_IMAGE":
+      return { ...state, backgroundImage: action.payload };
     case "RESET":
       return {
         title: "",
@@ -51,6 +57,7 @@ const contentReducer = (state: Content, action: ContentAction): Content => {
         subTitleContent: "",
         content: "",
         uploadFiles: [],
+        backgroundImage: "",
       };
     default:
       return state;
@@ -98,6 +105,7 @@ export default function EditorForm(props: EditorProps) {
         content: content.content,
         uploadFiles: content.uploadFiles,
         parentId: content.parentId ? content.parentId : null,
+        backgroundImage: content.backgroundImage,
       } as Content;
 
       await onSubmit(newContent);
@@ -140,6 +148,18 @@ export default function EditorForm(props: EditorProps) {
     }
   };
 
+  async function handleBackgroundUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const backgroundImageUrl = reader.result as string;
+        dispatch({ type: "SET_BACKGROUND_IMAGE", payload: backgroundImageUrl });
+      };
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit} className={cn("editor-container", className)}>
       <div className="border rounded-[6px] p-3 overflow-auto bg-white">
@@ -150,6 +170,30 @@ export default function EditorForm(props: EditorProps) {
           onContentUpdate={handleContentUpdate}
           ref={editorRef}
         />
+
+        <div className="flex items-center gap-2 mt-4 mb-2">
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleBackgroundUpload}
+            className="hidden"
+            id="card-background"
+          />
+          <label htmlFor="card-background">
+            <Button variant="outline" size="sm" type="button" asChild>
+              <span>
+                <ImagePlus className="w-4 h-4 mr-2" />
+                设置卡片背景
+              </span>
+            </Button>
+          </label>
+          {content.backgroundImage && (
+            <span className="text-sm text-muted-foreground">
+              已选择背景图片
+            </span>
+          )}
+        </div>
+
         <div className="editor-footer">
           <EditorImage
             onFilesChange={handleFilesChange}

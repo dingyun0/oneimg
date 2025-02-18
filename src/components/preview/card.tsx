@@ -46,6 +46,13 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
 
     const childContents = childContentsMap.get(content.id) || [];
 
+    const cardStyle = useMemo(() => ({
+      backgroundImage: content.backgroundImage ? `url(${content.backgroundImage})` : 'none',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }), [content.backgroundImage]);
+
     return (
       <div
         id={`${content.id}`}
@@ -59,22 +66,23 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
           "flex flex-col justify-center"
         )}
         ref={ref}
+        style={cardStyle}
       >
         {/* 只有当至少有一个标题存在时才显示标题容器 */}
         {(content.title || content.subTitle || content.subTitleContent) && (
           <div className="flex flex-col justify-center text-center">
             {content.title && (
-              <h1 className="text-xl font-bold flex items-center justify-center">
+              <h1 className="text-base font-bold flex items-center justify-center whitespace-pre-wrap leading-normal">
                 {parse(DOMPurify.sanitize(content.title))}
               </h1>
             )}
             {content.subTitle && (
-              <h2 className="text-lg font-semibold mt-2 flex items-center justify-center">
+              <h2 className="text-sm font-semibold mt-2 flex items-center justify-center whitespace-pre-wrap leading-normal">
                 {parse(DOMPurify.sanitize(content.subTitle))}
               </h2>
             )}
             {content.subTitleContent && (
-              <h3 className="text-base mt-1 flex items-center justify-center">
+              <h3 className="text-xs mt-1 flex items-center justify-center whitespace-pre-wrap leading-normal">
                 {parse(DOMPurify.sanitize(content.subTitleContent))}
               </h3>
             )}
@@ -92,13 +100,12 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
                 ? `${heroTemplate.content}`
                 : `${mainTemplate.content}`,
               "flex flex-col justify-center text-center",
-              // 只有当标题存在时才添加上边距
               (content.title || content.subTitle || content.subTitleContent) &&
                 "mt-4"
             )}
           >
             {content.content && (
-              <div className="text-sm flex flex-col items-center justify-center">
+              <div className="text-xs flex flex-col items-center justify-center ">
                 {parse(DOMPurify.sanitize(content.content))}
               </div>
             )}

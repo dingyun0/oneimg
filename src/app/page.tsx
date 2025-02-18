@@ -18,7 +18,7 @@ import { Header } from "@/components/header/header";
 import { Preview } from "@/components/preview/preview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import type { Content, ContentWithId, PreviewRef, ThemeContent } from "@/types";
+import type { ArticleModuleTemplate, Content, ContentWithId, PreviewRef, ThemeContent } from "@/types";
 import { DEFAULT_TEMPLATE, DEFAULT_THEME } from "@/theme";
 import { CustomThemeContext } from "@/contexts/custom-theme-context";
 import { useThemeStore } from "@/store/use-theme-store";
@@ -186,7 +186,7 @@ export default function Home() {
 
   return (
     <CustomThemeContext.Provider
-      value={{ theme, template: templateMap[templateName] }}
+      value={{ theme, template: templateMap[templateName] as ArticleModuleTemplate }}
     >
       <GlobalStyles styles={{ ":root": cssVariables }} />
       <div className="flex flex-col h-full">

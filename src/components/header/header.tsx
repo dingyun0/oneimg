@@ -302,57 +302,10 @@ export function Header(props: HeaderProps) {
                 {platform === 'mac' && <MenubarShortcut>⌘+Shift+E</MenubarShortcut>}
                 {platform === 'windows' && <MenubarShortcut>Ctrl+Shift+E</MenubarShortcut>}
               </MenubarItem>
-              <MenubarItem onClick={() => handleDialogOpen('user_guide')} >
-                <BookOpen className="w-4 h-4 mr-2" />
-                <span>指南</span>
-              </MenubarItem>
-              <MenubarItem asChild className="">
-                <a href="https://support.qq.com/product/673291" target="_blank" rel="noreferrer">
-                  <MessageSquareMore className="w-4 h-4 mr-2" />
-                  <span>反馈建议</span>
-                </a>
-              </MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem asChild>
-                <a href="https://github.com/byodian/oneimg" target="_blank" rel="noreferrer">
-                  <Image src="/images/github.svg" alt="github icon" className="w-4 h-4 mr-2" width={24} height={24} />
-                  <span>Github</span>
-                </a>
-              </MenubarItem>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger className="w-full px-2 py-1.5 hidden sm:block">
-                  <div className="flex items-center text-sm">
-                    <Image src="/images/wechat.svg" alt="wechat icon" className="w-4 h-4 mr-2" width={24} height={24} />
-                    <span>微信公众号</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="right" sideOffset={-50}>
-                  <div className="px-2 py-1.5 text-sm bg-white rounded-xl shadow-xl">
-                    <Image src="/images/wechat.png" alt="github icon" width={500} height={500} />
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-              <MenubarItem asChild>
-                <a href="https://t.me/oneimg" target="_blank" rel="noreferrer">
-                  <Image src="/images/telegram.svg" alt="telegram icon" className="w-4 h-4 mr-2" width={24} height={24} />
-                  <span>TG 交流群</span>
-                </a>
-              </MenubarItem>
-              <MenubarItem asChild>
-                <a href="https://x.com/byodian1" target="_blank" rel="noreferrer">
-                  <Image src="/images/x.svg" alt="x icon" className="w-4 h-4 mr-2" width={24} height={24} />
-                  <span>Follow us</span>
-                </a>
-              </MenubarItem>
-              <MenubarItem asChild>
-                <a href="https://www.xiaohongshu.com/user/profile/61278fd2000000000100a607" target="_blank" rel="noreferrer">
-                  <Image src="/images/xiaohongshu.svg" alt="xiaohongshu icon" className="w-4 h-4 mr-2" width={24} height={24} />
-                  <span>小红书</span>
-                </a>
-              </MenubarItem>
+              
               <MenubarSeparator />
               <div className="px-1.5 py-2 text-sm">
-                <div className="mb-2">模板</div>
+                <div >模板</div>
                 <Select value={templateName} onValueChange={(value: string) => {
                   const themeColor = DEFAULT_THEME_COLOR_MAP[value][0].label
                   setTemplateName(value)
@@ -376,33 +329,11 @@ export function Header(props: HeaderProps) {
                   </SelectContent >
                 </Select >
               </div >
-              <div className="px-1.5 py-2 text-sm">
-                <div className="mb-2">模版色</div>
-                <div>
-                  {DEFAULT_THEME_COLOR_MAP[templateName].map(color => (
-                    <Button
-                      key={color.value}
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        setTheme(color.label)
-                        localStorage.setItem(CACHE_KEY_THEME, color.label)
-                      }}
-                      className={cn({ 'bg-accent': theme === color.label })}>
-                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: color.value }}></div>
-                    </Button>
-                  ))}
-                </div>
-              </div>
+              
             </MenubarContent >
           </MenubarMenu >
         </Menubar >
         <div className="flex flex-wrap gap-2 ml-auto">
-          <Button size="sm" asChild variant="ghost" className="py-2 px-2">
-            <a href="https://github.com/byodian/oneimg" target="_blank" rel="noreferrer">
-              <Image src="/images/github.svg" alt="github icon" className="w-6 h-6" width={24} height={24} />
-            </a>
-          </Button>
           <Button size="sm" onClick={handleImageExportDialogOpen}>
             <ImageDown className="w-4 h-4 mr-2" />
             <span>导出图片</span>
