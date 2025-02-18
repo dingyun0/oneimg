@@ -92,7 +92,7 @@ export interface UploadProgressEvent extends ProgressEvent {
 // 编辑器向父组件暴露的方法
 export interface EditorMethods {
   reset: () => void;
-  isEmpty: () => boolean;
+  isEmpty: () => boolean |undefined;
   setImage: (url: string) => void;
 }
 

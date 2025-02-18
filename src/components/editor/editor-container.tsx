@@ -159,7 +159,7 @@ const EditorContainer = forwardRef<EditorMethods, EditorProps>(
             subTitleEditor?.isEmpty &&
             subTitleContentEditor?.isEmpty &&
             contentEditor?.isEmpty)
-        );
+        ) ;
       },
       setImage(url: string) {
         if (contentEditor) {
