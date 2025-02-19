@@ -84,6 +84,13 @@
   }
 }
 
+@font-face{
+  font-family: 'Bold';
+  src:url('../../public/fonts/PorscheNext-ThinItalic.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   html {
     text-size-adjust: none;
@@ -91,8 +98,7 @@
 
   body {
     @apply text-foreground leading-normal;
-    font-family: var(--font-noto-sans-sc), sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: 'Bold';
   }
 
   img {
@@ -179,7 +185,7 @@
   pre {
     background: #0d0d0d;
     color: #fff;
-    font-family: "JetBrainsMono", monospace;
+    font-family: 'Bold';
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 

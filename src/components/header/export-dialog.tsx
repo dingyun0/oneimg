@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/carousel'
 import { cn, removeHtmlTags } from '@/lib/utils'
 import { getContents } from '@/lib/indexed-db'
+import { log } from 'console'
 
 interface ExportImageProps {
   previewRef: React.RefObject<PreviewRef>;
@@ -63,6 +64,16 @@ export function ExportImageDialog({
   useEffect(() => {
     const exportOption = {
       scale: Number(scale),
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: null,
+      onclone: (clonedDoc: any) => {
+        const elements = clonedDoc.getElementsByTagName('*');
+        for (let i = 0; i < elements.length; i++) {
+          const computed = window.getComputedStyle(elements[i]);
+          elements[i].style.cssText = computed.cssText;
+        }
+      }
     } as ExportOption
 
     setPreviewImages([])

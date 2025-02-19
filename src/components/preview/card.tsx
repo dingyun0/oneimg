@@ -17,10 +17,16 @@ interface PreviewItemProps {
   children?: React.ReactNode;
   index: number;
   childContentsMap: Map<number, ContentWithId[]>;
+  position?: 'first' | 'last' | 'middle';
 }
 
+const sanitizeConfig = {
+  ALLOWED_TAGS: ['br'], // 只允许换行标签
+  KEEP_CONTENT: true
+};
+
 const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
-  ({ content, children, index, childContentsMap }, ref) => {
+  ({ content, children, index, childContentsMap, position }, ref) => {
     const theme = useContext(CustomThemeContext);
     const uploadFiles = content.uploadFiles;
     const imageFiles: ImageFile[] =
@@ -34,7 +40,13 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
       }, [uploadFiles]) || [];
 
     const templateClassNameMap = createStyleClassMap(
-      theme.template,
+      theme?.template || {
+        hero: {
+        },
+        main: {},
+        sub: {},
+        common: {}
+      },
       "template",
       baseTemplate
     );
@@ -52,6 +64,14 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
     }), [content.backgroundImage]);
+
+    // 清理 HTML 标签的函数
+    const cleanContent = (html: string) => {
+      return DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: ['br'],
+        KEEP_CONTENT: true
+      }).replace(/&nbsp;/g, ' ');
+    };
 
     return (
       <div
@@ -72,19 +92,37 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
         {(content.title || content.subTitle || content.subTitleContent) && (
           <div className="flex flex-col justify-center text-center">
             {content.title && (
-              <h1 className="text-base font-bold flex items-center justify-center whitespace-pre-wrap leading-normal">
-                {parse(DOMPurify.sanitize(content.title))}
-              </h1>
+              <h1 
+                className={cn(
+                  "flex items-center justify-center whitespace-pre-wrap leading-normal",
+                  position === 'first' 
+                    ? "text-[10rem]" 
+                    : "text-base"
+                )}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.title, sanitizeConfig) }}
+              />
             )}
             {content.subTitle && (
-              <h2 className="text-sm font-semibold mt-2 flex items-center justify-center whitespace-pre-wrap leading-normal">
-                {parse(DOMPurify.sanitize(content.subTitle))}
-              </h2>
+              <h2 
+                className={cn(
+                  "mt-2 flex items-center justify-center whitespace-pre-wrap leading-normal",
+                  position === 'first' 
+                    ? "text-[8rem] font-bold"
+                    : "text-sm font-semibold"
+                )}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.subTitle, sanitizeConfig) }}
+              />
             )}
             {content.subTitleContent && (
-              <h3 className="text-xs mt-1 flex items-center justify-center whitespace-pre-wrap leading-normal">
-                {parse(DOMPurify.sanitize(content.subTitleContent))}
-              </h3>
+              <h3 
+                className={cn(
+                  "mt-1 flex items-center justify-center whitespace-pre-wrap leading-normal",
+                  position === 'first' 
+                    ? "text-[6rem]"
+                    : "text-lg"
+                )}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.subTitleContent, sanitizeConfig) }}
+              />
             )}
           </div>
         )}
@@ -105,8 +143,17 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
             )}
           >
             {content.content && (
-              <div className="text-xs flex flex-col items-center justify-center ">
-                {parse(DOMPurify.sanitize(content.content))}
+              <div className={cn("flex flex-col items-center justify-center",
+                position==='first'?'text-base':'text-xs'
+            )}>
+                <div 
+                  dangerouslySetInnerHTML={{ 
+                    __html: DOMPurify.sanitize(content.content, {
+                      ALLOWED_TAGS: ['br'],
+                      KEEP_CONTENT: true
+                    })
+                  }} 
+                />
               </div>
             )}
             {imageFiles.length > 0 && <ImageList images={imageFiles} />}
@@ -132,6 +179,7 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
                 key={childContent.id}
                 content={childContent}
                 index={index}
+                position={position}
                 childContentsMap={childContentsMap}
               />
             ))}

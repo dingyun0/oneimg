@@ -102,7 +102,12 @@ export default function EditorForm(props: EditorProps) {
         title: content.title as string,
         subTitle: content.subTitle,
         subTitleContent: content.subTitleContent,
-        content: content.content,
+        content: content.content
+          ?.replace(/<p>/g, '')
+          ?.replace(/<\/p>/g, '<br>')
+          ?.replace(/\n/g, '<br>')
+          ?.replace(/<br\s*\/?><br\s*\/?>/g, '<br>')
+          ?.trim() || '',
         uploadFiles: content.uploadFiles,
         parentId: content.parentId ? content.parentId : null,
         backgroundImage: content.backgroundImage,

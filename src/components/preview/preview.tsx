@@ -50,17 +50,27 @@ const Preview = forwardRef<
         </div>
       ) : (
         <div className="one-list">
-          {parentContents.map((content, parentIndex) => (
-            <Card
-              index={parentIndex}
-              content={content}
-              key={content.id}
-              childContentsMap={childContentsMap}
-              ref={(el) => {
-                itemRefs.current[content.id] = el!;
-              }}
-            ></Card>
-          ))}
+          {parentContents.map((content, parentIndex) => {
+  // 计算位置
+  const position = parentIndex === 0 
+    ? 'first' 
+    : parentIndex === parentContents.length - 1 
+    ? 'last' 
+    : 'middle';
+
+  return (
+    <Card
+      index={parentIndex}
+      content={content}
+      key={content.id}
+      position={position}
+      childContentsMap={childContentsMap}
+      ref={(el) => {
+        itemRefs.current[content.id] = el!;
+      }}
+    />
+  );
+})}
         </div>
       )}
     </div>

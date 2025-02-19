@@ -21,27 +21,41 @@ export const createStyle = (classNamePrefix: string) => {
     }))
 }
 
-export const createStyleClassMap = (
-  templateStyles: ArticleModuleTemplate, prefix: string, baseStyles = {} as ArticleModuleTemplate,
-) => {
+const defaultTemplateStructure = {
+  hero: {},
+  main: {},
+  sub: {},
+  common: {}
+};
+
+export function createStyleClassMap(
+  templateStyles: ArticleModuleTemplate = defaultTemplateStructure,
+  prefix: string,
+  baseStyles: ArticleModuleTemplate
+) {
+  const mergedTemplateStyles = {
+    ...defaultTemplateStructure,
+    ...templateStyles
+  };
+
   const { classes: heroClasses } = createStyle(`${prefix}-hero`)({
     defaultStyles: baseStyles.hero ?? {},
-    templateStyles: templateStyles.hero,
+    templateStyles: mergedTemplateStyles.hero,
   })
 
   const { classes: mainClasses } = createStyle(`${prefix}-main`)({
     defaultStyles: baseStyles.main ?? {},
-    templateStyles: templateStyles.main,
+    templateStyles: mergedTemplateStyles.main,
   })
 
   const { classes: subClasses } = createStyle(`${prefix}-sub`)({
     defaultStyles: baseStyles.sub ?? {},
-    templateStyles: templateStyles.sub,
+    templateStyles: mergedTemplateStyles.sub,
   })
 
   const { classes: defaultClasses } = createStyle(`${prefix}-common`)({
     defaultStyles: baseStyles.common ?? {},
-    templateStyles: templateStyles.common,
+    templateStyles: mergedTemplateStyles.common,
   })
 
   const templateClassNameMap: ModuleClassNameMap = {

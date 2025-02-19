@@ -1,10 +1,16 @@
 import type { ArticleModuleTemplate, CustomCSSProperties } from '@/types/template'
+import { fontFamily } from 'html2canvas/dist/types/css/property-descriptors/font-family'
 
 export const commonTypography: CustomCSSProperties = {
   '& :where(p)': {
     marginTop: '5px',
     marginBottom: '5px',
     lineHeight: 1.7,
+    fontSize: '4px',
+  },
+  '& (h1)': {
+    fontSize: '6rem',
+    backgroundColor: 'red',
   },
   '& :where(code)': {
     backgroundColor: 'var(--gray-2)',
@@ -26,6 +32,10 @@ export const commonTypography: CustomCSSProperties = {
       fontSize: '0.8rem',
       padding: '0',
     },
+  },
+  '& :where(h1)': {
+    fontSize: '4rem',
+    backgroundColor: 'red',
   },
   '& :where(hr)': {
     border: 'none',
@@ -67,7 +77,32 @@ export const commonTypography: CustomCSSProperties = {
 
 export const baseTemplate: ArticleModuleTemplate = {
   common: {
-    container: {},
+    container: {
+      '&.first-card, &.last-card': {
+        'h1': {
+          fontSize: '10rem',
+          fontFamily: 'Bold',
+        },
+        'h2': {
+          fontSize: '8rem',
+          fontWeight: 700,
+        },
+        'h3': {
+          fontSize: '6rem',
+        }
+      },
+      '&.middle-card': {
+        'h1': {
+          fontSize: '1rem', // text-base
+        },
+        'h2': {
+          fontSize: '0.875rem', // text-sm
+        },
+        'h3': {
+          fontSize: '1.125rem', // text-lg
+        }
+      }
+    },
     title: {},
     content: commonTypography,
   },

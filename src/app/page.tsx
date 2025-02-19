@@ -68,16 +68,7 @@ export default function Home() {
     fetchContents();
   }, [toast]);
 
-  useEffect(() => {
-    const templateConfig = themeMap[templateName].find(
-      (item) => item.label === theme
-    );
 
-    if (templateConfig) {
-      const cssVariables = generateThemeVariables(templateConfig.theme!);
-      setCssVariables(cssVariables);
-    }
-  }, [theme, templateName, themeMap]);
 
   async function handleThemeContentSubmit(themeContent: ThemeContent) {
     try {
