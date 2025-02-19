@@ -17,12 +17,12 @@ interface PreviewItemProps {
   children?: React.ReactNode;
   index: number;
   childContentsMap: Map<number, ContentWithId[]>;
-  position?: 'first' | 'last' | 'middle';
+  position?: "first" | "last" | "middle";
 }
 
 const sanitizeConfig = {
-  ALLOWED_TAGS: ['br'], // 只允许换行标签
-  KEEP_CONTENT: true
+  ALLOWED_TAGS: ["br"], // 只允许换行标签
+  KEEP_CONTENT: true,
 };
 
 const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
@@ -41,15 +41,16 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
 
     const templateClassNameMap = createStyleClassMap(
       theme?.template || {
-        hero: {
-        },
+        hero: {},
         main: {},
         sub: {},
-        common: {}
+        common: {},
       },
       "template",
       baseTemplate
     );
+
+    console.log("Generated class names:", templateClassNameMap);
 
     // template
     const heroTemplate = templateClassNameMap.hero;
@@ -58,19 +59,24 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
 
     const childContents = childContentsMap.get(content.id) || [];
 
-    const cardStyle = useMemo(() => ({
-      backgroundImage: content.backgroundImage ? `url(${content.backgroundImage})` : 'none',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-    }), [content.backgroundImage]);
+    const cardStyle = useMemo(
+      () => ({
+        backgroundImage: content.backgroundImage
+          ? `url(${content.backgroundImage})`
+          : "none",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }),
+      [content.backgroundImage]
+    );
 
     // 清理 HTML 标签的函数
     const cleanContent = (html: string) => {
       return DOMPurify.sanitize(html, {
-        ALLOWED_TAGS: ['br'],
-        KEEP_CONTENT: true
-      }).replace(/&nbsp;/g, ' ');
+        ALLOWED_TAGS: ["br"],
+        KEEP_CONTENT: true,
+      }).replace(/&nbsp;/g, " ");
     };
 
     return (
@@ -90,38 +96,41 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
       >
         {/* 只有当至少有一个标题存在时才显示标题容器 */}
         {(content.title || content.subTitle || content.subTitleContent) && (
-          <div className="flex flex-col justify-center text-center">
+          <div className="flex flex-col justify-center text-center py-4">
             {content.title && (
-              <h1 
+              <h1
                 className={cn(
-                  "flex items-center justify-center whitespace-pre-wrap leading-normal",
-                  position === 'first' 
-                    ? "text-[10rem]" 
-                    : "text-base"
+                  "flex items-center font-bold justify-center whitespace-pre-wrap leading-normal ",
+                  position === "first" ? "text-[26px]" : "text-[30px]"
                 )}
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.title, sanitizeConfig) }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(content.title, sanitizeConfig),
+                }}
               />
             )}
             {content.subTitle && (
-              <h2 
+              <h2
                 className={cn(
-                  "mt-2 flex items-center justify-center whitespace-pre-wrap leading-normal",
-                  position === 'first' 
-                    ? "text-[8rem] font-bold"
-                    : "text-sm font-semibold"
+                  "flex  items-center justify-center whitespace-pre-wrap leading-normal",
+                  position === "first" ? "text-[24px]  p-0 m-0" : "text-[24px] "
                 )}
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.subTitle, sanitizeConfig) }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(content.subTitle, sanitizeConfig),
+                }}
               />
             )}
             {content.subTitleContent && (
-              <h3 
+              <h3
                 className={cn(
-                  "mt-1 flex items-center justify-center whitespace-pre-wrap leading-normal",
-                  position === 'first' 
-                    ? "text-[6rem]"
-                    : "text-lg"
+                  "flex items-center justify-center whitespace-pre-wrap leading-normal",
+                  position === "first" ? "text-[18px] p-0" : "text-[18px] pb-2"
                 )}
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.subTitleContent, sanitizeConfig) }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    content.subTitleContent,
+                    sanitizeConfig
+                  ),
+                }}
               />
             )}
           </div>
@@ -137,22 +146,27 @@ const Card = forwardRef<HTMLDivElement, PreviewItemProps>(
                 : content.type === "theme_content"
                 ? `${heroTemplate.content}`
                 : `${mainTemplate.content}`,
-              "flex flex-col justify-center text-center",
+              "flex flex-col justify-center text-center py-4",
               (content.title || content.subTitle || content.subTitleContent) &&
-                "mt-4"
+                "pt-2"
             )}
           >
             {content.content && (
-              <div className={cn("flex flex-col items-center justify-center",
-                position==='first'?'text-base':'text-xs'
-            )}>
-                <div 
-                  dangerouslySetInnerHTML={{ 
+              <div
+                className={cn(
+                  "flex flex-col items-center justify-center",
+                  position === "first"
+                    ? "text-[15px]"
+                    : "text-[16px] text-gray-600 mb-6"
+                )}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(content.content, {
-                      ALLOWED_TAGS: ['br'],
-                      KEEP_CONTENT: true
-                    })
-                  }} 
+                      ALLOWED_TAGS: ["br"],
+                      KEEP_CONTENT: true,
+                    }),
+                  }}
                 />
               </div>
             )}
